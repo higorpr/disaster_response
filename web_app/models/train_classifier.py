@@ -1,21 +1,21 @@
 import sys
-import nltk
 import pandas as pd
-import re
-import numpy as np
+import nltk
+
 import pickle
 
 from sqlalchemy import create_engine
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, precision_recall_fscore_support
-from sklearn.multioutput import MultiOutputClassifier
 
+from tokenizer import tokenize
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import precision_recall_fscore_support
+from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+
+nltk.download(['punkt', 'wordnet'])
 
 def load_data(database_filepath):
     '''
@@ -31,7 +31,6 @@ def load_data(database_filepath):
     '''
     # load data from database
     engine = create_engine(f'sqlite:///{database_filepath}')
-    table = database_filepath.replace('.db','')
     df = pd.read_sql_table('disasterDB',engine)
       
     # defining input and target values for the ML algorith
@@ -42,34 +41,6 @@ def load_data(database_filepath):
     category_values = df.iloc[:,4:].columns
     
     return X, Y, category_values
-
-def tokenize(text):
-    '''
-    Returns a list with lemmatized tokens from a string.
-
-        Parameters:
-            text (str): A string message to be tokenized and lemmatized
-
-        Returns:
-            clean_tokens (str list): A list of strings containing the lemmatized tokens.
-    '''
-    
-    # removing URLs from messages in order to reduce machine work
-    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-    detected_urls = re.findall(url_regex, text)
-    for url in detected_urls:
-        text = text.replace(url, "urlplaceholder")
-
-    # Tokenizing text
-    tokens = word_tokenize(text)
-    # Lemmatizing text
-    lemmatizer = WordNetLemmatizer()    
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(lemmatizer.lemmatize(tok).lower().strip(),pos='v')
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
 
 
 def build_model():

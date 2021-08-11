@@ -3,9 +3,7 @@ import plotly
 import pandas as pd
 import joblib
 
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
-
+from tokenizer import tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar, Pie
@@ -14,33 +12,13 @@ from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
-def tokenize(text):
-    '''
-    Returns a list with lemmatized tokens from a string.
-
-        Parameters:
-            text (str): A string message to be tokenized and lemmatized
-
-        Returns:
-            clean_tokens (str list): A list of strings containing the lemmatized tokens.
-    '''
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
-
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
-
 # load data
-engine = create_engine('sqlite:///../web_app/data/DisasterResponse.db')
+engine = create_engine('sqlite:///data/DisasterResponse.db')
 # engine = create_engine('sqlite:////DisasterResponse.db')
 df = pd.read_sql_table('disasterDB', engine)
 
 # load model
-model = joblib.load("../web_app/models/classifier.pkl")
+model = joblib.load("models/classifier.pkl")
 # model = joblib.load("classifier.pkl")
 
 
@@ -147,11 +125,11 @@ def go():
     )
 
 
-# def main():
-#     app.run(host='0.0.0.0', port=3001, debug=True)
-# # pass
+def main():
+    app.run(host='0.0.0.0', port=3001, debug=True)
+# pass
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
     
