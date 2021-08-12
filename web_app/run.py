@@ -17,11 +17,6 @@ engine = create_engine('sqlite:///data/DisasterResponse.db')
 # engine = create_engine('sqlite:////DisasterResponse.db')
 df = pd.read_sql_table('disasterDB', engine)
 
-# load model
-model = joblib.load("models/classifier.pkl")
-# model = joblib.load("classifier.pkl")
-
-
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
@@ -110,6 +105,9 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    # load model
+    model = joblib.load("models/classifier.pkl")
+
     # save user input in query
     query = request.args.get('query', '') 
 
