@@ -3,7 +3,7 @@
 1. [Installation](#installation)
 2. [Project Motivation](#motivation)
 3. [File Descriptions](#files)
-4. [Script Order](#script)
+4. [Setup](#setup)
 5. [Observations](#results)
 6. [Licensing, Authors, and Acknowledgements](#licensing)
 
@@ -57,13 +57,24 @@ these results in their respective pages on the web app.
 - tokenizer.py: Same file present on the "models" folder.
 - Procfile: File that specifies the commands executed by the app on startup.
 
-## Script Order<a name="script"></a>
+## Setup<a name="setup"></a>
 
-The order in which one should run the forementioned scripts in order to deploy the web app locally is:
+The steps to deploy the web app locally are:
 
-1. process_data.py
-2. train_classifier.py
-3. run.py
+1. Clone the GitHub disaster-response repository (https://github.com/higorpr/disaster_response).
+2. Install the packages mentioned on the Installation(#installation) section. If you are using pip, run the command "pip install <package_name>".
+3. Go to ../web_app/data (navigate through the folders using "*cd <folder_path>*" on your terminal) and run process_data.py. This can be done by entering the command:
+	"*python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db*". This command will create the SQL database DisasterResponse.db on the 
+	data folder.
+4. Navigate the terminal prompt to ../web_app/models and run train_classifier.py. This can be done by the command: "*python train_classifier.py ../data/DisasterResponse.db*
+	*classifier.pkl"* . This command considers that the database file (.db) is in the data folder mentioned in the last step. With that the ML model will be created, trained
+	and stored into a pickle file (classifier.pkl). Additionally, you should be able to verify the values of precision, recall and f1-score for all the categories present on
+	the file disaster_categories.csv. Be warned that due to teh process of model optimization, this step might take a few minutes.
+5. Now, you have all the parts needed to execute run.py in the root folder (web_app). Navigate the terminal prompt to it and run the script by entering the command: "*python*
+	*run.py*'. If the the files DisasterResponse.db and classifier.pkl are, respectively, in the data and models folders, there should be no errors. After a successful execution,
+	displayed on the terminal, you shall have a url address, where the app will be locally deployed.
+
+Obs.: The app is currently deployed using Heroku, and can be accessed through: https://disaster-higor-app.herokuapp.com/.
 
 ## Observations<a name="results"></a>
 
