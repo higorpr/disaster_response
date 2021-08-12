@@ -56,13 +56,16 @@ filepath of the model pickle file.
 these results in their respective pages on the web app. 
 - tokenizer.py: Same file present on the "models" folder.
 - Procfile: File that specifies the commands executed by the app on startup.
+- nltk.txt: File that specifies the nltk downloads that are necessary in the app.
+- requirements.txt: List of packages necessary to deploy the web app to Heroku.
+- runtime.txt: File specifying the python version.
 
 ## Setup<a name="setup"></a>
 
 The steps to deploy the web app locally are:
 
 1. Clone the GitHub disaster-response repository (https://github.com/higorpr/disaster_response).
-2. Install the packages mentioned on the Installation(#installation) section. If you are using pip, run the command "pip install <package_name>".
+2. Install the packages mentioned on the Installation section. If you are using pip, run the command "pip install <package_name>".
 3. Go to ../web_app/data (navigate through the folders using "*cd <folder_path>*" on your terminal) and run process_data.py. This can be done by entering the command:
 	"*python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db*". This command will create the SQL database DisasterResponse.db on the 
 	data folder.
